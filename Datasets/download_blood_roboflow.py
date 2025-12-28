@@ -9,25 +9,24 @@ from roboflow import Roboflow
 rf = Roboflow(api_key="PjUym3maiIS3wU8Ce7zp")
 
 # Create a clean workspace folder
-workspace_dir = "Blood_Roboflow_Workspace"
+workspace_dir = "Blood_Roboflow_Workspace_Remastered"
 os.makedirs(workspace_dir, exist_ok=True)
 os.chdir(workspace_dir)
 
 print(f"🚀 Starting download in: {os.getcwd()}")
 
 # ==========================================
-# 2. DOWNLOAD RAABIN (Your Way - Version 4)
+# 2. DOWNLOAD RAABIN (Version 4)
 # ==========================================
 try:
     print("\n⬇️  Downloading Raabin (Memoria)...")
-    # Using your specific snippet
     project = rf.workspace("memoria").project("raabin")
     version = project.version(4)
     dataset = version.download("yolov11")
     
     # Rename folder to be consistent
     if os.path.exists(dataset.location):
-        # Remove old folder if exists
+        # Remove old folder if exists to prevent conflicts
         if os.path.exists("Raabin_WBC"): shutil.rmtree("Raabin_WBC")
         os.rename(dataset.location, "Raabin_WBC")
         print("✅ Raabin secured in folder: Raabin_WBC")
@@ -54,13 +53,14 @@ except Exception as e:
     print(f"❌ BCCD Download Failed: {e}")
 
 # ==========================================
-# 4. DOWNLOAD SICKLE CELL (Anemia)
+# 4. DOWNLOAD SICKLE CELL (Anemia) - UPDATED
 # ==========================================
 try:
-    print("\n⬇️  Downloading Sickle Cell...")
-    # The best public Sickle Cell project
-    project = rf.workspace("sickle-cell-classifications").project("detecting-sickle-cells-in-blood")
-    version = project.version(1)
+    print("\n⬇️  Downloading Sickle Cell (researchmethodology-bwfx1)...")
+    
+    # --- UPDATED SOURCE ---
+    project = rf.workspace("researchmethodology-bwfx1").project("sickle-cell-detector")
+    version = project.version(2)
     dataset = version.download("yolov11")
     
     if os.path.exists(dataset.location):
