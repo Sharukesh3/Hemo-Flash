@@ -5,7 +5,7 @@ from ultralytics import YOLO
 # 1. SETUP PATHS
 # ==========================================
 # Absolute path to your local dataset
-dataset_path = "/dist_home/suryansh/sharukesh/analog/Datasets/Final_Blood_YOLO_Hierarchical"
+dataset_path = "/dist_home/suryansh/sharukesh/analog/Datasets/Final_Blood_YOLO_Hierarchical_Remastered_clahe"
 data_yaml = os.path.join(dataset_path, "data.yaml")
 
 print(f"🚀  Initializing Geometric Augmentation Training...")

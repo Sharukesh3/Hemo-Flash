@@ -5,7 +5,7 @@ from ultralytics import YOLO
 # 1. SETUP PATHS & CONFIG
 # ==========================================
 # Absolute path to your dataset config based on your pwd history
-dataset_path = "/dist_home/suryansh/sharukesh/analog/Datasets/Final_Blood_YOLO_Hierarchical"
+dataset_path = "/dist_home/suryansh/sharukesh/analog/Datasets/Final_Blood_YOLO_Hierarchical_Remastered_clahe"
 data_yaml = os.path.join(dataset_path, "data.yaml")
 
 print(f"🚀  Initializing Base Model Training...")

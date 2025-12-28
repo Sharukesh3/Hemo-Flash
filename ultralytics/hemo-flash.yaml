@@ -1,0 +1,48 @@
+# Hemo-Flash-v11: High-Speed Hematology Model
+# Updated for 9-Class Clinical Dataset
+
+nc: 9  # <--- UPDATED to 9 classes
+names: [
+  'RBC_Normal',   # 0
+  'RBC_Sickle',   # 1
+  'Platelets',    # 2
+  'WBC_Base',     # 3
+  'Neutrophil',   # 4
+  'Eosinophil',   # 5
+  'Basophil',     # 6
+  'Monocyte',     # 7
+  'Lymphocyte'    # 8
+]
+
+scales: # Based on YOLOv11n (Nano)
+  n: [0.50, 0.25, 1024] 
+
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv, [64, 3, 2]]  # 0-P1/2
+  - [-1, 1, Conv, [128, 3, 2]] # 1-P2/4
+  - [-1, 1, GhostPConv, [128]] # 2 
+  - [-1, 1, Conv, [256, 3, 2]] # 3-P3/8
+  - [-1, 1, GhostPConv, [256]] # 4 
+  - [-1, 1, Conv, [512, 3, 2]] # 5-P4/16 (Input 1 to Neck)
+  - [-1, 1, GhostPConv, [512]] # 6 (Input 2 to Neck)
+  # STOP. P5 Amputated.
+
+head:
+  # Truncated Bi-FPN Neck
+  
+  # 1. Lateral Skip from P3 (Layer 4) -> Resize to 128 channels
+  - [4, 1, Conv, [128, 1, 1]]  # 7
+  
+  # 2. Top-Down Path: P4 -> P3
+  - [6, 1, nn.Upsample, [None, 2, 'nearest']] # 8: Upsample P4
+  - [[-1, 7], 1, WeightedConcat, [1]]         # 9: Bi-FPN Weighted Fusion (P4up + P3)
+  - [-1, 1, GhostPConv, [128]]                # 10: Refine Features
+
+  # 3. Bottom-Up Path: P3 -> P4
+  - [-1, 1, Conv, [128, 3, 2]]                # 11: Downsample P3
+  - [[-1, 6], 1, WeightedConcat, [1]]         # 12: Bi-FPN Weighted Fusion (P3down + P4)
+  - [-1, 1, GhostPConv, [256]]                # 13: Refine Features
+
+  # 4. Detection Head (Detects at P3 and P4 only)
+  - [[10, 13], 1, Detect, [nc]] # 14
