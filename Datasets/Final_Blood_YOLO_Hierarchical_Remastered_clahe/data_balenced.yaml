@@ -1,0 +1,6 @@
+path: /dist_home/suryansh/sharukesh/analog/Datasets/Final_Blood_YOLO_Hierarchical_Remastered_clahe
+train: train_balanced.txt
+val: valid/images
+test: test/images
+nc: 9
+names: ['RBC_Normal', 'RBC_Sickle', 'Platelets', 'WBC_Base', 'Neutrophil', 'Eosinophil', 'Basophil', 'Monocyte', 'Lymphocyte']
